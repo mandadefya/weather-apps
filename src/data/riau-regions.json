@@ -1,0 +1,151 @@
+[
+  {
+    "province": "Riau",
+    "cities": [
+      {
+        "name": "Pekanbaru",
+        "lat": 0.5333,
+        "lon": 101.4500,
+        "villages": [
+          { "name": "Rumbai",      "lat": 0.4560, "lon": 101.3960 },
+          { "name": "Sail",        "lat": 0.5050, "lon": 101.4460 },
+          { "name": "Senapelan",   "lat": 0.5770, "lon": 101.4150 },
+          { "name": "Tampan",      "lat": 0.5410, "lon": 101.4530 },
+          { "name": "Marpoyan",    "lat": 0.5380, "lon": 101.4600 }
+        ]
+      },
+      {
+        "name": "Dumai",
+        "lat": 1.4565,
+        "lon": 101.4426,
+        "villages": [
+          { "name": "Bukit Kapur",       "lat": 1.4910, "lon": 101.4590 },
+          { "name": "Sungai Sembilan",   "lat": 1.4820, "lon": 101.5110 },
+          { "name": "Dumai Kota",        "lat": 1.4560, "lon": 101.4420 },
+          { "name": "Dumai Barat",       "lat": 1.4500, "lon": 101.4370 },
+          { "name": "Medang Kampai",     "lat": 1.4450, "lon": 101.4430 }
+        ]
+      },
+      {
+        "name": "Siak",
+        "lat": 0.7333,
+        "lon": 102.4167,
+        "villages": [
+          { "name": "Mempura",      "lat": 0.6910, "lon": 102.4700 },
+          { "name": "Tualang",      "lat": 0.6730, "lon": 102.3330 },
+          { "name": "Dayun",        "lat": 0.7090, "lon": 102.3400 },
+          { "name": "Sungai Apit",  "lat": 0.7330, "lon": 102.4670 },
+          { "name": "Minas",        "lat": 0.7100, "lon": 102.3680 }
+        ]
+      },
+      {
+        "name": "Bengkalis",
+        "lat": 1.0729,
+        "lon": 102.1966,
+        "villages": [
+          { "name": "Bandar Sri Laksamana", "lat": 1.0970, "lon": 102.0910 },
+          { "name": "Bantan",              "lat": 1.1410, "lon": 102.2340 },
+          { "name": "Bukit Batu",          "lat": 0.9960, "lon": 102.2830 },
+          { "name": "Rupat Utara",         "lat": 1.2370, "lon": 102.5780 },
+          { "name": "Sungai Pakning",      "lat": 1.0200, "lon": 102.1600 }
+        ]
+      },
+      {
+        "name": "Indragiri Hulu",
+        "lat": 0.6688,
+        "lon": 101.4086,
+        "villages": [
+          { "name": "Rengat",            "lat": 0.5190, "lon": 101.4340 },
+          { "name": "Kelayang",          "lat": 0.5740, "lon": 101.5630 },
+          { "name": "Sei Lala",          "lat": 0.6690, "lon": 101.4620 },
+          { "name": "Lubuk Batu Jaya",   "lat": 0.6160, "lon": 101.5120 },
+          { "name": "Peranap",           "lat": 0.8200, "lon": 101.2650 }
+        ]
+      },
+      {
+        "name": "Indragiri Hilir",
+        "lat": 0.5030,
+        "lon": 103.4279,
+        "villages": [
+          { "name": "Tembilahan Kota", "lat": 0.4940, "lon": 103.2500 },
+          { "name": "Reteh",           "lat": 0.4600, "lon": 103.2230 },
+          { "name": "Kateman",         "lat": 0.5310, "lon": 103.3920 },
+          { "name": "Mandah",          "lat": 0.5010, "lon": 103.4360 },
+          { "name": "Gaung",           "lat": 0.4720, "lon": 103.4730 }
+        ]
+      },
+      {
+        "name": "Kampar",
+        "lat": 0.4958,
+        "lon": 101.5439,
+        "villages": [
+          { "name": "Bangkinang Kota", "lat": 0.5040, "lon": 101.3790 },
+          { "name": "Salo",            "lat": 0.5800, "lon": 101.4730 },
+          { "name": "Siak Hulu",       "lat": 0.6360, "lon": 101.6050 },
+          { "name": "Tapung",          "lat": 0.5320, "lon": 101.3460 },
+          { "name": "Kampar",          "lat": 0.5530, "lon": 101.5500 }
+        ]
+      },
+      {
+        "name": "Kuantan Singingi",
+        "lat": 0.6045,
+        "lon": 101.5630,
+        "villages": [
+          { "name": "Teluk Kuantan",   "lat": 0.6070, "lon": 101.5220 },
+          { "name": "Sentajo Raya",    "lat": 0.6240, "lon": 101.6380 },
+          { "name": "Kuantan Mudik",   "lat": 0.4450, "lon": 101.5610 },
+          { "name": "Gunung Toar",     "lat": 0.6850, "lon": 101.5150 },
+          { "name": "Kuantan Tengah",  "lat": 0.6060, "lon": 101.6130 }
+        ]
+      },
+      {
+        "name": "Pelalawan",
+        "lat": 0.0488,
+        "lon": 102.4838,
+        "villages": [
+          { "name": "Pangkalan Kerinci", "lat": 0.3900, "lon": 102.8740 },
+          { "name": "Langgam",           "lat": 0.2440, "lon": 102.4860 },
+          { "name": "Ukui",              "lat": 0.1020, "lon": 102.4400 },
+          { "name": "Petapahan",         "lat": 0.4970, "lon": 102.7280 },
+          { "name": "Bunut",             "lat": 0.1470, "lon": 102.5040 }
+        ]
+      },
+      {
+        "name": "Rokan Hulu",
+        "lat": 0.7900,
+        "lon": 100.8866,
+        "villages": [
+          { "name": "Pasir Pengaraian",      "lat": 0.7920, "lon": 100.9050 },
+          { "name": "Rambah",                "lat": 0.9190, "lon": 100.9740 },
+          { "name": "Pagaran Tapah Darussalam","lat": 0.8500, "lon": 100.9010 },
+          { "name": "Bonai Darussalam",      "lat": 0.8930, "lon": 100.9560 },
+          { "name": "Tambusai",              "lat": 0.6700, "lon": 100.8550 }
+        ]
+      },
+      {
+        "name": "Rokan Hilir",
+        "lat": 1.0313,
+        "lon": 101.8113,
+        "villages": [
+          { "name": "Bagansiapiapi", "lat": 1.0610, "lon": 101.8010 },
+          { "name": "Bangko",         "lat": 1.0250, "lon": 101.8220 },
+          { "name": "Kubu",           "lat": 1.0680, "lon": 101.7620 },
+          { "name": "Tanah Putih",    "lat": 1.0610, "lon": 101.8360 },
+          { "name": "Sinaboi",        "lat": 1.0470, "lon": 101.8070 }
+        ]
+      },
+      {
+        "name": "Kepulauan Meranti",
+        "lat": 0.4130,
+        "lon": 102.4400,
+        "villages": [
+          { "name": "Tebing Tinggi",     "lat": 0.4550, "lon": 102.5420 },
+          { "name": "Merbau",            "lat": 0.6160, "lon": 102.4890 },
+          { "name": "Pulau Merbau",      "lat": 0.7330, "lon": 102.7200 },
+          { "name": "Rangsang Pesisir",  "lat": 0.5910, "lon": 102.2870 },
+          { "name": "Tasik Putri Puyu",  "lat": 0.4090, "lon": 102.4090 }
+        ]
+      }
+    ]
+  }
+]
