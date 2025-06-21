@@ -1,22 +1,25 @@
 // src/components/ProtectedRoute.jsx
 import React, { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
-export default function ProtectedRoute({ role, children }) {
-  const { user } = useContext(AuthContext);
+import AdminLayout from "../layouts/AdminLayout";
+import GuestLayout from "../layouts/Guestlayout";
 
-  // Kalau belum login → ke halaman login
+export default function ProtectedRoute() {
+  const { user } = useContext(AuthContext);
+  
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  // Kalau ada role yang diprotect dan tidak cocok → redirect silang
-  const userRole = user.user_metadata.role;
-  if (role && userRole !== role) {
-    return <Navigate to={`/${userRole}/weather`} replace />;
-  }
+  const role = user.user_metadata?.role;
 
-  // Role sesuai → render children
-  return children;
+  const Layout = role === "admin" ? AdminLayout : GuestLayout;
+
+  return (
+    <Layout>
+      <Outlet />
+    </Layout>
+  );
 }
