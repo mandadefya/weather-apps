@@ -4,7 +4,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
 import AdminLayout from "../layouts/AdminLayout";
-import GuestLayout from "../layouts/Guestlayout";
+import GuestLayout from "../layouts/GuestLayout";
 
 export default function ProtectedRoute() {
   const { user } = useContext(AuthContext);

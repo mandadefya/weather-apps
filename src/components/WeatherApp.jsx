@@ -1,113 +1,145 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import riauRegions from "../data/riau-regions.json";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const API_KEY = "e889c3abb20ea7850e8b9d87c05f5193"; // ganti jika perlu
 
 export default function WeatherApp() {
   const cities = riauRegions[0].cities;
-  const [city, setCity]       = useState(cities[0].name);
-  const [village, setVillage] = useState(cities[0].villages[0].name);
-  const [weather, setWeather] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [selectedVillage, setSelectedVillage] = useState(null);
+  const [weatherData, setWeatherData] = useState({});
   const [loading, setLoading] = useState(false);
-  const [error, setError]     = useState("");
+  const [error, setError] = useState("");
+  const scrollRef = useRef(null);
 
-  // Ambil koordinat desa terpilih
-  const getCoords = () => {
-    const c = cities.find((c) => c.name === city);
-    const v = c.villages.find((v) => v.name === village);
-    return { lat: v.lat, lon: v.lon };
-  };
-
-  // Panggil OpenWeather
-  const fetchWeather = async () => {
-    setError("");
-    setLoading(true);
-    setWeather(null);
-
-    const { lat, lon } = getCoords();
-    if (lat == null || lon == null) {
-      setError("Koordinat tidak ditemukan");
-      setLoading(false);
-      return;
-    }
-
+  const fetchWeather = async (lat, lon, name) => {
     try {
       const res = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
       );
       const data = await res.json();
       if (data.cod !== 200) throw new Error(data.message);
-      setWeather(data);
+      setWeatherData((prev) => ({ ...prev, [name]: data }));
     } catch (e) {
       setError(e.message);
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Fetch on mount
   useEffect(() => {
-    fetchWeather();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    cities.forEach((city) => {
+      const firstVillage = city.villages[0];
+      fetchWeather(firstVillage.lat, firstVillage.lon, city.name);
+    });
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (scrollRef.current) {
+        const scrollAmount = 280;
+        const current = scrollRef.current;
+        if (current.scrollLeft + current.offsetWidth >= current.scrollWidth) {
+          current.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+        }
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleScroll = (dir) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
+        left: dir === "left" ? -280 : 280,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const handleCityClick = (city) => {
+    setSelectedCity(city);
+    const firstVillage = city.villages[0];
+    fetchWeather(firstVillage.lat, firstVillage.lon, firstVillage.name);
+    setSelectedVillage(null);
+  };
+
+  const handleVillageClick = (village) => {
+    fetchWeather(village.lat, village.lon, village.name);
+    setSelectedVillage(village);
+  };
+
+  const dataList = selectedCity ? selectedCity.villages : cities;
+
   return (
-    <div>
-      <h1>Cuaca Saat Ini (Provinsi Riau)</h1>
+    <div className="relative">
+      <h1 className="text-xl font-semibold mb-4">
+        Cuaca Saat Ini {selectedCity ? `di ${selectedCity.name}` : "(Provinsi Riau)"}
+      </h1>
 
-      <div>
-        <label>
-          Kota &nbsp;
-          <select
-            value={city}
-            onChange={(e) => {
-              const newCity = e.target.value;
-              setCity(newCity);
-              // reset desa
-              const c = cities.find((c) => c.name === newCity);
-              setVillage(c.villages[0].name);
-            }}
-          >
-            {cities.map((c) => (
-              <option key={c.name} value={c.name}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-        </label>
+      {selectedCity && (
+        <button
+          onClick={() => {
+            setSelectedCity(null);
+            setSelectedVillage(null);
+          }}
+          className="mb-4 text-blue-600 hover:underline"
+        >
+          ← Kembali ke daftar kota
+        </button>
+      )}
 
-        <label style={{ marginLeft: 16 }}>
-          Desa &nbsp;
-          <select
-            value={village}
-            onChange={(e) => setVillage(e.target.value)}
-          >
-            {cities
-              .find((c) => c.name === city)
-              .villages.map((v) => (
-                <option key={v.name} value={v.name}>
-                  {v.name}
-                </option>
-              ))}
-          </select>
-        </label>
+      <div className="relative">
+        <button
+          onClick={() => handleScroll("left")}
+          className="absolute z-10 left-0 top-1/2 transform -translate-y-1/2 bg-white shadow p-2 rounded-full"
+        >
+          <FaChevronLeft />
+        </button>
 
-        <button onClick={fetchWeather} disabled={loading} style={{ marginLeft: 16 }}>
-          {loading ? "Loading…" : "Cek Cuaca"}
+        <div
+  ref={scrollRef}
+  className="flex overflow-x-auto gap-4 pb-4 px-10 snap-x scroll-smooth hide-scrollbar"
+>
+
+          {dataList.map((item) => {
+            const name = item.name;
+            const data = weatherData[name];
+            return (
+              <div
+                key={name}
+                onClick={() =>
+                  selectedCity ? handleVillageClick(item) : handleCityClick(item)
+                }
+                className="min-w-[240px] max-w-[240px] bg-gradient-to-br from-blue-100 to-white p-4 rounded-xl cursor-pointer shadow hover:shadow-md transition-all duration-300"
+              >
+                <h2 className="text-lg font-semibold">{name}</h2>
+                {!selectedCity && <p className="text-sm text-gray-500 mt-1">18.00 WIB</p>}
+
+                {data ? (
+                  <>
+                    <div className="text-4xl mt-2">{Math.round(data.main.temp)}°C</div>
+                    <p className="capitalize text-sm mt-1">
+                      {data.weather[0].description}
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-sm mt-2 text-gray-400">Loading...</p>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        <button
+          onClick={() => handleScroll("right")}
+          className="absolute z-10 right-0 top-1/2 transform -translate-y-1/2 bg-white shadow p-2 rounded-full"
+        >
+          <FaChevronRight />
         </button>
       </div>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      {weather && (
-        <div style={{ marginTop: 20 }}>
-          <h2>Lokasi: {weather.name}</h2>
-          <p>Suhu: {weather.main.temp} °C</p>
-          <p>Cuaca: {weather.weather[0].description}</p>
-          <p>Kelembapan: {weather.main.humidity}%</p>
-          <p>Angin: {weather.wind.speed} m/s</p>
-        </div>
-      )}
+      {error && <p className="text-red-500 mt-4">{error}</p>}
     </div>
   );
 }

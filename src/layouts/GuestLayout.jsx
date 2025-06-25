@@ -1,30 +1,29 @@
-
 // src/components/GuestLayout.jsx
-import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
+import React from "react";
+import GuestHeader from "../components/Guest/GuestHeader";
+import GuestFooter from "../components/Guest/GuestFooter";
 
 export default function GuestLayout({ children }) {
-  const { signOut } = useContext(AuthContext);
-  const nav = useNavigate();
-
   return (
-    <div className="flex min-h-screen">
-      <aside className="w-64 p-4 bg-green-100">
-        <h2 className="text-xl mb-4">Guest Menu</h2>
-        <nav className="space-y-2">
-          <Link to="/weather">🌤 Cuaca</Link>
-          <Link to="/locations">📍 Lokasi</Link>
-          <Link to="/favorites">💾 Favorit</Link>
-          <Link to="/articles">📰 Artikel</Link>
-          <Link to="/user">👥 Profil</Link>
-        </nav>
-        <div className="mt-6 space-y-2">
-          <button onClick={() => nav("/weather")}>Go to Weather</button>
-          <button onClick={signOut} className="text-red-600">Logout</button>
-        </div>
-      </aside>
-      <main className="flex-1 p-4">{children}</main>
+    <div className="flex flex-col min-h-screen bg-white text-gray-800">
+      {/* Header */}
+      <GuestHeader />
+
+      {/* Alert Cuaca */}
+      <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 m-4 rounded">
+        <p className="font-semibold text-yellow-800">⚠️ Peringatan Dini Cuaca</p>
+        <p className="text-sm text-yellow-700">
+          Beberapa wilayah masih berpotensi terjadi hujan dengan intensitas sedang hingga lebat.
+        </p>
+      </div>
+
+      {/* Konten utama */}
+      <main className="flex-1 px-6 py-4">
+        {children}
+      </main>
+
+      {/* Footer */}
+      <GuestFooter />
     </div>
   );
 }

@@ -1,20 +1,19 @@
-// src/pages/ArticleForm.jsx
 import { useState, useContext, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
+import { FaSave } from "react-icons/fa";
 
 export default function ArticleForm() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { id } = useParams(); // Cek apakah sedang edit
+  const { id } = useParams();
   const isEditing = Boolean(id);
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
 
-  // Jika sedang edit, ambil data artikel dari Supabase
   useEffect(() => {
     if (isEditing) {
       const fetchArticle = async () => {
@@ -46,7 +45,6 @@ export default function ArticleForm() {
     }
 
     if (isEditing) {
-      // UPDATE
       const { error: updateError } = await supabase
         .from("articles")
         .update({ title, content })
@@ -58,7 +56,6 @@ export default function ArticleForm() {
         navigate("/articles");
       }
     } else {
-      // INSERT
       const { error: insertError } = await supabase.from("articles").insert([
         {
           title,
@@ -76,42 +73,49 @@ export default function ArticleForm() {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-6">
-      <h1 className="text-xl font-bold mb-4">
-        {isEditing ? "Edit Artikel" : "Tambah Artikel"}
-      </h1>
+    <div className="max-w-3xl mx-auto px-4 py-8">
+      <div className="bg-white rounded-xl shadow-md p-6">
+        <h1 className="text-2xl font-bold mb-6 text-blue-800 text-center">
+          {isEditing ? "✏️ Edit Artikel" : "📝 Tambah Artikel"}
+        </h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {error && <p className="text-red-600">{error}</p>}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {error && <p className="text-red-600 font-medium">{error}</p>}
 
-        <div>
-          <label className="block font-semibold">Judul</label>
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full border rounded px-3 py-2"
-            required
-          />
-        </div>
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              Judul Artikel
+            </label>
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Masukkan judul artikel"
+              required
+            />
+          </div>
 
-        <div>
-          <label className="block font-semibold">Konten</label>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="w-full border rounded px-3 py-2"
-            rows={5}
-            required
-          />
-        </div>
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              Isi Artikel
+            </label>
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 shadow-sm min-h-[180px] resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Tulis isi artikel di sini..."
+              required
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          {isEditing ? "Simpan Perubahan" : "Simpan"}
-        </button>
-      </form>
+          <button
+            type="submit"
+            className="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200"
+          >
+            <FaSave /> {isEditing ? "Simpan Perubahan" : "Simpan Artikel"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

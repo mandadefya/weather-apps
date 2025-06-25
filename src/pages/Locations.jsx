@@ -1,86 +1,72 @@
-// src/pages/Locations.jsx
 import React, { useContext, useState } from "react";
 import riauRegions from "../data/riau-regions.json";
 import { AuthContext } from "../contexts/AuthContext";
+import { FaChevronDown, FaChevronUp, FaEdit, FaTrash, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function Locations() {
-  const { user }  = useContext(AuthContext);
-  const isAdmin   = user.user_metadata.role === "admin";
-  const cities    = riauRegions[0].cities;  // ambil dari JSON
+  const { user } = useContext(AuthContext);
+  const isAdmin = user.user_metadata.role === "admin";
+  const cities = riauRegions[0].cities;
   const [expanded, setExpanded] = useState({});
 
   const toggleCity = (name) => {
-    setExpanded((e) => ({ ...e, [name]: !e[name] }));
+    setExpanded((prev) => ({ ...prev, [name]: !prev[name] }));
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Daftar Lokasi Provinsi Riau</h1>
+    <div className="px-6 py-4 bg-gradient-to-br from-white via-blue-50 to-blue-100 min-h-screen">
+      <h1 className="text-3xl font-bold text-gray-800 mb-8 flex items-center gap-2">
+        <FaMapMarkerAlt className="text-blue-600" />
+        Daftar Lokasi Provinsi Riau
+      </h1>
 
-      {cities.map((city) => (
-        <div
-          key={city.name}
-          style={{
-            marginTop: 16,
-            border: "1px solid #ddd",
-            borderRadius: 8,
-            overflow: "hidden",
-          }}
-        >
-          <button
-            onClick={() => toggleCity(city.name)}
-            style={{
-              width: "100%",
-              textAlign: "left",
-              padding: "12px",
-              background: "#f7fafc",
-              border: "none",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {cities.map((city) => (
+          <div
+            key={city.name}
+            className="bg-white rounded-xl shadow-md border border-gray-100 transition hover:shadow-lg"
           >
-            {city.name}
-          </button>
-
-          {expanded[city.name] && (
-            <div style={{ padding: "12px", background: "#fff" }}>
-              <ul style={{ marginLeft: 20 }}>
-                {city.villages.map((v) => (
-                  <li key={v.name}>{v.name}</li>
-                ))}
-              </ul>
-
-              {isAdmin && (
-                <div style={{ marginTop: 8 }}>
-                  <button
-                    style={{
-                      marginRight: 8,
-                      padding: "4px 8px",
-                      background: "#319795",
-                      color: "white",
-                      border: "none",
-                      borderRadius: 4,
-                    }}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    style={{
-                      padding: "4px 8px",
-                      background: "#E53E3E",
-                      color: "white",
-                      border: "none",
-                      borderRadius: 4,
-                    }}
-                  >
-                    Hapus
-                  </button>
-                </div>
+            <button
+              onClick={() => toggleCity(city.name)}
+              className="w-full text-left flex justify-between items-center px-5 py-4 bg-gradient-to-r from-blue-100 to-white hover:from-blue-200 rounded-t-xl transition"
+            >
+              <span className="text-lg font-semibold text-gray-700">{city.name}</span>
+              {expanded[city.name] ? (
+                <FaChevronUp className="text-blue-500" />
+              ) : (
+                <FaChevronDown className="text-blue-500" />
               )}
-            </div>
-          )}
-        </div>
-      ))}
+            </button>
+
+            {expanded[city.name] && (
+              <div className="px-5 py-4 bg-white rounded-b-xl">
+                <ul className="space-y-2 text-gray-600 font-medium">
+                  {city.villages.map((v) => (
+                    <li
+                      key={v.name}
+                      className="px-3 py-1 rounded hover:bg-blue-50 transition"
+                    >
+                      • {v.name}
+                    </li>
+                  ))}
+                </ul>
+
+                {isAdmin && (
+                  <div className="flex gap-3 mt-4">
+                    <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                      <FaEdit /> Edit
+                    </button>
+                    <button className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                      <FaTrash /> Hapus
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
+
