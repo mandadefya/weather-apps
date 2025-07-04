@@ -5,6 +5,7 @@ import "./assets/tailwind.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
+import "./assets/tailwind.css";
 
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";

@@ -12,6 +12,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/* tambahkan ke styles.css jika perlu */
+input::placeholder {
+  color: #a0aec0;
+}
+
+input:focus {
+  outline: none;
+}
 
 /* Default anchor link */
 a {

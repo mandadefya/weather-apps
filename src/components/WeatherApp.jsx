@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import riauRegions from "../data/riau-regions.json";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { supabase } from "../lib/supabaseClient";
 
 const API_KEY = "e889c3abb20ea7850e8b9d87c05f5193"; // ganti jika perlu
 
@@ -23,6 +24,25 @@ export default function WeatherApp() {
       setWeatherData((prev) => ({ ...prev, [name]: data }));
     } catch (e) {
       setError(e.message);
+    }
+  };
+
+  const handleAddFavorite = async (region_name, lat, lon) => {
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error("Anda harus login untuk menyimpan favorit.");
+      const user_id = user.id;
+
+      const { data, error } = await supabase.from("favorites").insert([
+        { user_id, region_name, lat, lon },
+      ]);
+
+      if (error) throw error;
+      alert("Lokasi ditambahkan ke favorit!");
+    } catch (e) {
+      alert(e.message);
     }
   };
 
@@ -98,13 +118,14 @@ export default function WeatherApp() {
         </button>
 
         <div
-  ref={scrollRef}
-  className="flex overflow-x-auto gap-4 pb-4 px-10 snap-x scroll-smooth hide-scrollbar"
->
-
+          ref={scrollRef}
+          className="flex overflow-x-auto gap-4 pb-4 px-10 snap-x scroll-smooth hide-scrollbar"
+        >
           {dataList.map((item) => {
             const name = item.name;
             const data = weatherData[name];
+            const lat = item.lat;
+            const lon = item.lon;
             return (
               <div
                 key={name}
@@ -118,10 +139,30 @@ export default function WeatherApp() {
 
                 {data ? (
                   <>
-                    <div className="text-4xl mt-2">{Math.round(data.main.temp)}°C</div>
-                    <p className="capitalize text-sm mt-1">
-                      {data.weather[0].description}
-                    </p>
+                    <div className="text-4xl mt-2">
+                      {Math.round(data.main.temp)}°C{" "}
+                      {(() => {
+                        const temp = data.main.temp;
+                        const desc = data.weather[0].description.toLowerCase();
+
+                        if (desc.includes("rain")) return "🌧️";
+                        if (temp >= 33) return "🌞";
+                        if (temp <= 24) return "❄️";
+                        return "⛅";
+                      })()}
+                    </div>
+                    <p className="capitalize text-sm mt-1">{data.weather[0].description}</p>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddFavorite(name, lat, lon);
+                      }}
+                      title="Tambah ke Favorit"
+                      className="mt-2 text-xl text-red-500 hover:scale-110 transition-transform duration-200"
+                    >
+                      ❤️
+                    </button>
+
                   </>
                 ) : (
                   <p className="text-sm mt-2 text-gray-400">Loading...</p>

@@ -8,11 +8,13 @@ import {
   FaNewspaper,
 } from "react-icons/fa";
 import { AuthContext } from "../contexts/AuthContext";
+import { ThemeContext } from "../contexts/ThemeContext";
 import Header2 from "./Header2";
 import Footer from "./Footer";
 
 export default function Layout() {
   const { user, loading } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
 
   if (loading) return <div className="p-6">🔄 Memuat akun...</div>;
@@ -21,12 +23,26 @@ export default function Layout() {
   const role = user.user_metadata?.role;
 
   return (
-    <div className="flex min-h-screen bg-gray-100 text-gray-800 overflow-hidden">
+    <div
+      className={`flex min-h-screen overflow-hidden ${
+        theme === "dark"
+          ? "bg-gray-900 text-gray-200"
+          : "bg-gray-100 text-gray-800"
+      }`}
+    >
       {/* Sidebar */}
-      <aside className="w-72 bg-white border-r p-6 shadow flex flex-col justify-between">
+      <aside
+        className={`w-72 p-6 shadow flex flex-col justify-between border-r ${
+          theme === "dark"
+            ? "bg-gray-800 border-gray-700 text-gray-100"
+            : "bg-white border-gray-200 text-gray-800"
+        }`}
+      >
         <div>
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-blue-600">🌤 Weather Dashboard</h2>
+            <h2 className="text-xl font-bold text-blue-600">
+              🌤 Weather Dashboard
+            </h2>
             <p className="text-sm text-gray-500 mt-1">
               {role === "admin" ? "Admin Panel" : "User Panel"}
             </p>
@@ -54,7 +70,11 @@ export default function Layout() {
       {/* Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Sticky Header */}
-        <div className="sticky top-0 z-10 bg-white shadow">
+        <div
+          className={`sticky top-0 z-10 shadow ${
+            theme === "dark" ? "bg-gray-800" : "bg-white"
+          }`}
+        >
           <Header2 />
         </div>
 
@@ -72,14 +92,20 @@ export default function Layout() {
 
 // Komponen Reusable untuk Sidebar Link
 function SidebarLink({ to, icon, label }) {
+  const { theme } = useContext(ThemeContext);
+
   return (
     <NavLink
       to={to}
       className={({ isActive }) =>
         `flex items-center px-5 py-3 rounded-lg text-base font-medium transition-colors ${
           isActive
-            ? "bg-blue-100 text-blue-800 font-semibold"
-            : "text-gray-800 hover:bg-blue-50"
+            ? theme === "dark"
+              ? "bg-blue-900 text-blue-200 font-semibold"
+              : "bg-blue-100 text-blue-800 font-semibold"
+            : theme === "dark"
+              ? "text-gray-300 hover:bg-gray-700"
+              : "text-gray-800 hover:bg-blue-50"
         }`
       }
     >
