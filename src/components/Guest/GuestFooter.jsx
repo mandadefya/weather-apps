@@ -1,10 +1,12 @@
-import React from "react";
-import { ThemeContext } from "../../contexts/ThemeContext";
+import { TiWeatherPartlySunny } from "react-icons/ti";
 
 export default function GuestFooter() {
   return (
-    <footer className="bg-gray-100 dark:bg-gray-800 border-t border-gray-300 dark:border-gray-700 py-4 text-center text-sm text-gray-600 dark:text-gray-300">
-  &copy; {new Date().getFullYear()} Weather App • Guest Mode
-</footer>
-  );
+      <footer className="bg-white border-t px-6 py-4 text-sm text-gray-500 text-center shadow-inner">
+        <div className="flex justify-center items-center gap-1">
+          <span>© {new Date().getFullYear()} Weather Guest Dashboard</span>
+          <TiWeatherPartlySunny />
+        </div>
+      </footer>
+    );
 }

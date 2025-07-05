@@ -1,5 +1,6 @@
 // src/components/guest/GuestHeader.jsx
 import React, { useContext } from "react";
+import { RiLogoutCircleLine } from "react-icons/ri"; 
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
@@ -108,12 +109,12 @@ export default function GuestHeader() {
             </div>
 
             {/* Logout */}
-            <button
+            <div
               onClick={signOut}
-              className="text-red-600 hover:text-red-800 dark:hover:text-red-400 font-medium transition-colors duration-200"
-            >
-              Logout
-            </button>
+              className="flex flex-col items-center text-red-600 text-sm cursor-pointer hover:text-red-800">
+              <RiLogoutCircleLine size={24} />
+              <span>Logout</span>
+            </div>
           </div>
         </div>
       </header>

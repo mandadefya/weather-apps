@@ -17,8 +17,8 @@ export default function Layout() {
   const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
 
-  if (loading) return <div className="p-6">🔄 Memuat akun...</div>;
-  if (!user) return <div className="p-6">❌ Tidak ada akun.</div>;
+  if (loading) return <div className="p-6"> Memuat akun...</div>;
+  if (!user) return <div className="p-6"> Tidak ada akun.</div>;
 
   const role = user.user_metadata?.role;
 

@@ -1,4 +1,3 @@
-// src/pages/Articles.jsx
 import React, { useContext, useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { AuthContext } from "../contexts/AuthContext";
@@ -68,7 +67,17 @@ export default function Articles() {
               key={a.id}
               className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group"
             >
-              <div className="h-48 bg-gradient-to-br from-yellow-100 to-yellow-200 group-hover:from-yellow-200 group-hover:to-yellow-300"></div>
+              {a.image_url ? (
+                <img
+                  src={a.image_url}
+                  alt={a.title}
+                  className="h-48 w-full object-cover rounded-t-2xl"
+                />
+              ) : (
+                <div className="h-48 bg-gradient-to-br from-yellow-100 to-yellow-200 group-hover:from-yellow-200 group-hover:to-yellow-300 flex items-center justify-center text-gray-400 italic rounded-t-2xl">
+                  Tidak ada gambar
+                </div>
+              )}
 
               <div className="p-5 flex-1 flex flex-col justify-between">
                 <div>

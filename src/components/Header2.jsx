@@ -1,9 +1,10 @@
+import { RiLogoutCircleLine } from "react-icons/ri"; 
 import React, { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { useNavigate } from "react-router-dom";
 import { FaBell, FaMoon, FaSun } from "react-icons/fa";
-import logo from "../assets/image.png"; // ✅ Tambahkan logo di sini
+import logo from "../assets/image.png"; 
 
 export default function Header2() {
   const { user, signOut } = useContext(AuthContext);
@@ -68,12 +69,12 @@ export default function Header2() {
         </div>
 
         {/* Logout */}
-        <button
+        <div 
           onClick={signOut}
-          className="text-sm text-red-600 hover:underline ml-2"
-        >
-          Logout
-        </button>
+          className="flex flex-col items-center text-red-600 text-sm cursor-pointer hover:text-red-800">
+          <RiLogoutCircleLine size={24} />
+          <span>Logout</span>
+        </div>
       </div>
     </header>
   );

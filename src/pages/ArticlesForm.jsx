@@ -12,6 +12,8 @@ export default function ArticleForm() {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -28,6 +30,7 @@ export default function ArticleForm() {
         } else {
           setTitle(data.title);
           setContent(data.content);
+          setImageUrl(data.image_url || "");
         }
       };
 
@@ -44,10 +47,32 @@ export default function ArticleForm() {
       return;
     }
 
+    let finalImageUrl = imageUrl;
+
+    // Upload gambar jika ada file baru
+    if (image) {
+      const fileName = `${Date.now()}-${image.name}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from("article-image")
+        .upload(fileName, image);
+
+      if (uploadError) {
+        setError("Gagal mengunggah gambar.");
+        return;
+      }
+
+      const { data: publicUrlData } = supabase
+        .storage
+        .from("article-image")
+        .getPublicUrl(fileName);
+
+      finalImageUrl = publicUrlData.publicUrl;
+    }
+
     if (isEditing) {
       const { error: updateError } = await supabase
         .from("articles")
-        .update({ title, content })
+        .update({ title, content, image_url: finalImageUrl })
         .eq("id", id);
 
       if (updateError) {
@@ -61,6 +86,7 @@ export default function ArticleForm() {
           title,
           content,
           created_by: user.id,
+          image_url: finalImageUrl,
         },
       ]);
 
@@ -78,6 +104,16 @@ export default function ArticleForm() {
         <h1 className="text-2xl font-bold mb-6 text-blue-800 text-center">
           {isEditing ? "✏️ Edit Artikel" : "📝 Tambah Artikel"}
         </h1>
+
+        {isEditing && imageUrl && (
+          <div className="mb-6 text-center">
+            <img
+              src={imageUrl}
+              alt="Gambar Artikel"
+              className="max-w-xs mx-auto rounded"
+            />
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && <p className="text-red-600 font-medium">{error}</p>}
@@ -105,6 +141,23 @@ export default function ArticleForm() {
               className="w-full border border-gray-300 rounded-lg px-4 py-3 shadow-sm min-h-[180px] resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Tulis isi artikel di sini..."
               required
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              Gambar Artikel
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files[0])}
+              className="block w-full text-sm text-gray-500
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-lg file:border-0
+                file:text-sm file:font-semibold
+                file:bg-blue-100 file:text-blue-700
+                hover:file:bg-blue-200"
             />
           </div>
 
