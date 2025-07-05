@@ -78,8 +78,8 @@ export default function Register() {
             value={role}
             onChange={(e) => setRole(e.target.value)}
           >
-            <option value="guest">Guest</option>
-            <option value="admin">Admin</option>
+            <option value="guest">Guest</option>  
+            <option value="admin">Admin</option>  
           </select>
         </label>
 

@@ -35,7 +35,7 @@ export default function WeatherApp() {
       if (!user) throw new Error("Anda harus login untuk menyimpan favorit.");
       const user_id = user.id;
 
-      const { data, error } = await supabase.from("favorites").insert([
+      const { error } = await supabase.from("favorites").insert([
         { user_id, region_name, lat, lon },
       ]);
 
@@ -103,7 +103,7 @@ export default function WeatherApp() {
             setSelectedCity(null);
             setSelectedVillage(null);
           }}
-          className="mb-4 text-blue-600 hover:underline"
+          className="mb-4 text-blue-600 dark:text-yellow-300 hover:underline"
         >
           ← Kembali ke daftar kota
         </button>
@@ -112,7 +112,7 @@ export default function WeatherApp() {
       <div className="relative">
         <button
           onClick={() => handleScroll("left")}
-          className="absolute z-10 left-0 top-1/2 transform -translate-y-1/2 bg-white shadow p-2 rounded-full"
+          className="absolute z-10 left-0 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-700 text-black dark:text-white shadow p-2 rounded-full"
         >
           <FaChevronLeft />
         </button>
@@ -132,10 +132,20 @@ export default function WeatherApp() {
                 onClick={() =>
                   selectedCity ? handleVillageClick(item) : handleCityClick(item)
                 }
-                className="min-w-[240px] max-w-[240px] bg-gradient-to-br from-blue-100 to-white p-4 rounded-xl cursor-pointer shadow hover:shadow-md transition-all duration-300"
+                className="min-w-[240px] max-w-[240px] 
+                           bg-gradient-to-br from-blue-100 to-white 
+                           dark:from-gray-800 dark:to-gray-900 
+                           text-gray-800 dark:text-gray-100 
+                           p-4 rounded-xl cursor-pointer 
+                           shadow hover:shadow-md 
+                           transition-all duration-300"
               >
                 <h2 className="text-lg font-semibold">{name}</h2>
-                {!selectedCity && <p className="text-sm text-gray-500 mt-1">18.00 WIB</p>}
+                {!selectedCity && (
+                  <p className="text-sm text-gray-500 dark:text-gray-300 mt-1">
+                    18.00 WIB
+                  </p>
+                )}
 
                 {data ? (
                   <>
@@ -151,7 +161,9 @@ export default function WeatherApp() {
                         return "⛅";
                       })()}
                     </div>
-                    <p className="capitalize text-sm mt-1">{data.weather[0].description}</p>
+                    <p className="capitalize text-sm mt-1 dark:text-gray-300">
+                      {data.weather[0].description}
+                    </p>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -161,11 +173,12 @@ export default function WeatherApp() {
                       className="mt-2 text-xl text-red-500 hover:scale-110 transition-transform duration-200"
                     >
                       ❤️
-                    </button>
-
+                    </button> 
                   </>
                 ) : (
-                  <p className="text-sm mt-2 text-gray-400">Loading...</p>
+                  <p className="text-sm mt-2 text-gray-400 dark:text-gray-500">
+                    Loading...
+                  </p>
                 )}
               </div>
             );
@@ -174,7 +187,7 @@ export default function WeatherApp() {
 
         <button
           onClick={() => handleScroll("right")}
-          className="absolute z-10 right-0 top-1/2 transform -translate-y-1/2 bg-white shadow p-2 rounded-full"
+          className="absolute z-10 right-0 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-700 text-black dark:text-white shadow p-2 rounded-full"
         >
           <FaChevronRight />
         </button>
