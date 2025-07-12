@@ -81,35 +81,32 @@ export default function Favorites() {
             return (
               <div
                 key={fav.id}
-                className="relative bg-gradient-to-br from-blue-100 to-white p-4 rounded-xl shadow hover:shadow-md transition-all duration-300"
-              >
+                className="relative bg-gradient-to-br from-blue-100 to-white text-gray-800 p-4 rounded-xl shadow hover:shadow-md transition-all duration-300 dark:!bg-gradient-to-br dark:!from-blue-100 dark:!to-white dark:!text-gray-800">
                 <button
                   onClick={() => handleDeleteFavorite(fav.id)}
-                  className="absolute top-2 right-2 text-red-500 text-lg hover:text-red-700"
-                  title="Hapus dari favorit"
-                >
+                  className="absolute top-2 right-2 text-red-600 hover:text-red-800"
+                  title="Hapus dari favorit">
                   ❌
                 </button>
                 <h2 className="text-lg font-semibold">{fav.region_name}</h2>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-gray-700 mt-1">
                   Koordinat: {fav.lat}, {fav.lon}
                 </p>
                 {data ? (
                   <>
                     <div className="text-4xl mt-2">{Math.round(data.main.temp)}°C</div>
-                    <p className="capitalize text-sm mt-1">
+                    <p className="capitalize text-sm mt-1 text-gray-800">
                       {data.weather[0].description}
                     </p>
                   </>
                 ) : (
-                  <p className="text-sm mt-2 text-gray-400">Memuat cuaca...</p>
+                  <p className="text-sm mt-2 text-gray-500">Memuat cuaca...</p>
                 )}
               </div>
             );
           })}
         </div>
-      )}
-
+      )}  
       {error && <p className="text-red-500 mt-4">{error}</p>}
     </div>
   );

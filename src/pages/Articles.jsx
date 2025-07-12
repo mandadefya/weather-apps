@@ -45,7 +45,7 @@ export default function Articles() {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-10">
-      <h1 className="text-4xl font-bold mb-8 text-gray-800">📰 Daftar Artikel</h1>
+      <h1 className="text-4xl font-semibold mb-8">📰 Daftar Artikel</h1>
 
       {isAdmin && (
         <button
