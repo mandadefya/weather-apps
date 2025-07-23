@@ -2,99 +2,85 @@ import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import logo from "../../assets/image.png";
+import Particles from "../../components/Backgrounds/Particles/Particles";
+import DropdownRole from "../../components/DropdownRole";
 
-export default function Register() {
-  const { signUp } = useContext(AuthContext);
+export default function Login() {
+  const { signIn } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("guest");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(""); 
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+    e.preventDefault(); 
     if (!email || !password) {
-      setError("Email dan password wajib diisi.");
+      setError("Email dan password wajib diisi");
       return;
     }
 
-    setLoading(true);
-    const { error: signUpError } = await signUp(email, password, role);
-    if (signUpError) {
-      setError(signUpError.message);
+    const success = await signIn(email, password, role);
+    if (success) {
+      navigate("/");
     } else {
-      navigate("/login", { replace: true });
+      setError("Login gagal. Periksa kembali data Anda.");
     }
-    setLoading(false);
-  };
+  };  
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-sky-100 to-blue-200 px-4">
+    <div className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden">
+      <Particles />
+
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md bg-white p-10 rounded-3xl shadow-2xl"
+        className="relative z-10 w-full max-w-md bg-white/5 backdrop-blur-sm rounded-3xl p-10 shadow-2xl"
       >
-        <div className="flex justify-center mb-6">
-          <img src={logo} alt="Logo" className="h-20 w-20" />
+        <div className="flex justify-center mb-8">
+          <img src={logo} alt="Logo" className="w-20 h-20 rounded-full" />
         </div>
 
-        <h1 className="text-3xl mb-6 text-center font-bold text-gray-700">
-          Create Account
-        </h1>
-
-        {error && <p className="text-red-600 mb-4 text-sm text-center">{error}</p>}
+        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
 
         <label className="block mb-4">
-          <span className="font-medium text-gray-700">Email</span>
+          <span className="text-white font-medium">Email</span>
           <input
             type="email"
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="you@example.com"
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
+            placeholder="Email"
           />
         </label>
 
         <label className="block mb-4">
-          <span className="font-medium text-gray-700">Password</span>
+          <span className="text-white font-medium">Password</span>
           <input
             type="password"
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            placeholder="••••••••"
+            className="mt-1 block w-full px-4 py-2 border border-gray-300 bg-white/10 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            placeholder="Password"
           />
         </label>
 
         <label className="block mb-6">
-          <span className="font-medium text-gray-700">Daftar sebagai</span>
-          <select
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          >
-            <option value="guest">Guest</option>  
-            <option value="admin">Admin</option>  
-          </select>
-        </label>
+        <span className="font-medium text-white">Daftar sebagai</span>
+        <DropdownRole role={role} setRole={setRole} />
+      </label>
 
         <button
           type="submit"
-          disabled={loading}
-          className="w-full px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition disabled:opacity-50"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
         >
-          {loading ? "Mendaftar..." : "Register"}
+          Login
         </button>
 
-        <p className="mt-4 text-sm text-center text-gray-600">
-          Sudah punya akun?{" "}
-          <Link to="/login" className="text-blue-500 hover:underline">
-            Login
+        <p className="text-center text-white text-sm mt-4">
+          Belum punya akun?{" "}
+          <Link to="/register" className="text-blue-300 hover:underline">
+            Daftar sekarang
           </Link>
         </p>
       </form>
