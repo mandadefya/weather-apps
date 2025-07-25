@@ -5,29 +5,35 @@ import logo from "../../assets/image.png";
 import Particles from "../../components/ReactBits/Particles";
 import DropdownRole from "../../components/DropdownRole";
 
-export default function Login() {
-  const { signIn } = useContext(AuthContext);
+export default function Register() {
+  const { signUp } = useContext(AuthContext); // ⬅️ GUNAKAN signUp
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("guest");
-  const [error, setError] = useState(""); 
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
+    setError("");
+
     if (!email || !password) {
       setError("Email dan password wajib diisi");
       return;
     }
 
-    const success = await signIn(email, password, role);
-    if (success) {
-      navigate("/");
+    setLoading(true);
+    const { error: signUpError } = await signUp(email, password, role);
+
+    if (signUpError) {
+      setError("Registrasi gagal: " + signUpError.message);
     } else {
-      setError("Login gagal. Periksa kembali data Anda.");
+      navigate("/login");
     }
-  };  
+    setLoading(false);
+  };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden">
@@ -66,21 +72,22 @@ export default function Login() {
         </label>
 
         <label className="block mb-6">
-        <span className="font-medium text-white">Daftar sebagai</span>
-        <DropdownRole role={role} setRole={setRole} />
-      </label>
+          <span className="font-medium text-white">Daftar sebagai</span>
+          <DropdownRole role={role} setRole={setRole} />
+        </label>
 
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
+          disabled={loading}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 disabled:opacity-50"
         >
-          Login
+          {loading ? "Mendaftarkan..." : "Daftar"}
         </button>
 
         <p className="text-center text-white text-sm mt-4">
-          Belum punya akun?{" "}
-          <Link to="/register" className="text-blue-300 hover:underline">
-            Daftar sekarang
+          Sudah punya akun?{" "}
+          <Link to="/login" className="text-blue-300 hover:underline">
+            Login di sini
           </Link>
         </p>
       </form>
