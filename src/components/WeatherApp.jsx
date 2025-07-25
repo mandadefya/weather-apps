@@ -1,11 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import riauRegions from "../data/riau-regions.json";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { supabase } from "../lib/supabaseClient";
+import TextType from "./ReactBits/TextType";
+import CurvedLoop from "./ReactBits/CurvedLoop";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 const API_KEY = "e889c3abb20ea7850e8b9d87c05f5193"; // ganti jika perlu
 
 export default function WeatherApp() {
+  const { theme } = useContext(ThemeContext);
   const cities = riauRegions[0].cities;
   const [selectedCity, setSelectedCity] = useState(null);
   const [selectedVillage, setSelectedVillage] = useState(null);
@@ -93,9 +97,20 @@ export default function WeatherApp() {
 
   return (
     <div className="relative">
-      <h1 className="text-xl font-semibold mb-4">
-        Cuaca Saat Ini {selectedCity ? `di ${selectedCity.name}` : "(Provinsi Riau)"}
-      </h1>
+      <TextType
+        as="h1"
+        text={[
+          selectedCity ? `Cuaca Saat Ini di ${selectedCity.name}` : "Cuaca Saat Ini di Provinsi Riau",
+          "Info cuaca ter-update",
+          "Data dari OpenWeatherMap 🔥"
+        ]}
+        typingSpeed={60}
+        pauseDuration={2000}
+        showCursor={true}
+        className={`text-xl font-semibold mb-4 ${
+          theme === "dark" ? "text-white" : "text-gray-900"
+        }`}
+      />
 
       {selectedCity && (
         <button
@@ -109,7 +124,7 @@ export default function WeatherApp() {
         </button>
       )}
 
-      <div className="relative">
+      <div className="relative mb-2">
         <button
           onClick={() => handleScroll("left")}
           className="absolute z-10 left-0 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-700 text-black dark:text-white shadow p-2 rounded-full"
@@ -119,7 +134,7 @@ export default function WeatherApp() {
 
         <div
           ref={scrollRef}
-          className="flex overflow-x-auto gap-4 pb-4 px-10 snap-x scroll-smooth hide-scrollbar"
+          className="flex overflow-x-auto items-center gap-4 px-10 snap-x scroll-smooth hide-scrollbar mb-2"
         >
           {dataList.map((item) => {
             const name = item.name;
@@ -193,7 +208,18 @@ export default function WeatherApp() {
         </button>
       </div>
 
-      {error && <p className="text-red-500 mt-4">{error}</p>}
+      {error && <p className="text-red-500 mb-2">{error}</p>}
+      
+      <CurvedLoop 
+        marqueeText="Terima kasih telah menggunakan aplikasi cuaca Riau ✦ Semoga harimu cerah ✦"
+        speed={1}
+        curveAmount={20}
+        direction="left"
+        interactive={true}
+        className={`text-sm ${
+          theme === "dark" ? "text-gray-300" : "text-gray-700"
+        }`}
+      />
     </div>
   );
-}
+} 

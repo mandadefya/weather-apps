@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import logo from "../../assets/image.png";
-import Particles from "../../components/Backgrounds/Particles/Particles";
+import Particles from "../../components/ReactBits/Particles";
 
 export default function Login() {
   const { signIn } = useContext(AuthContext);
